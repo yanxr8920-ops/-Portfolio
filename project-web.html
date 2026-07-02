@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>寻光 AI 官网设计</title>
+    <link rel="stylesheet" href="styles.css?v=layout-81" />
+  </head>
+  <body class="project-page">
+    <main class="project-shell">
+      <nav class="project-nav">
+        <a href="index.html#catalog">← 返回目录</a>
+        <span>03 / WEBSITE</span>
+      </nav>
+
+      <section class="project-detail" aria-label="寻光官网项目作品集分页">
+        <aside class="project-anchor" aria-label="页面锚点">
+          <a href="#page-01" aria-current="true">01</a>
+          <a href="#page-02">02</a>
+          <a href="#page-03">03</a>
+          <a href="#page-04">04</a>
+          <a href="#page-05">05</a>
+        </aside>
+
+        <div class="project-main">
+          <section class="project-hero project-hero-single">
+            <div class="project-copy">
+              <p class="project-kicker">03 / Official Website Design</p>
+              <h1>寻光 AI<br />官网设计</h1>
+              <dl class="project-info" aria-label="项目信息">
+                <div>
+                  <dt>项目时间</dt>
+                  <dd>2024.07 - 2025.05</dd>
+                </div>
+                <div>
+                  <dt>页面数量</dt>
+                  <dd>5 Pages</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          <article class="project-pages">
+            <figure class="project-page-shot" id="page-01">
+              <img src="assets/projects/web/page-01.jpg" width="1920" height="4787" alt="寻光官网项目作品集第 01 页" decoding="async" fetchpriority="high" />
+            </figure>
+            <figure class="project-page-shot" id="page-02">
+              <img src="assets/projects/web/page-02.jpg" width="1920" height="2159" alt="寻光官网项目作品集第 02 页" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="project-page-shot" id="page-03">
+              <img src="assets/projects/web/page-03.jpg" width="1920" height="8947" alt="寻光官网项目作品集第 03 页" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="project-page-shot" id="page-04">
+              <img src="assets/projects/web/page-04.jpg" width="1920" height="11896" alt="寻光官网项目作品集第 04 页" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="project-page-shot" id="page-05">
+              <img src="assets/projects/web/page-05.jpg" width="1920" height="4872" alt="寻光官网项目作品集第 05 页" loading="lazy" decoding="async" />
+            </figure>
+          </article>
+
+          <a class="next-project" href="index.html#catalog" aria-label="返回目录">
+            <span>Back to Catalogue</span>
+            <strong>返回目录</strong>
+            <b aria-hidden="true">↗</b>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const anchorLinks = Array.from(document.querySelectorAll(".project-anchor a"));
+      const pageSections = anchorLinks
+        .map((link) => document.querySelector(link.getAttribute("href")))
+        .filter(Boolean);
+      let activeId = "";
+      let scrollTicking = false;
+
+      const setActiveAnchor = (id) => {
+        if (!id || id === activeId) return;
+        activeId = id;
+        anchorLinks.forEach((link) => {
+          const active = link.getAttribute("href") === `#${id}`;
+          if (active) {
+            link.setAttribute("aria-current", "true");
+            link.scrollIntoView({ block: "nearest", inline: "nearest" });
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        });
+      };
+
+      const updateActiveAnchor = () => {
+        scrollTicking = false;
+        const probeY = window.innerHeight * 0.32;
+        let current = pageSections[0];
+
+        for (const section of pageSections) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= probeY && rect.bottom > probeY) {
+            current = section;
+            break;
+          }
+          if (rect.top <= probeY) {
+            current = section;
+          }
+        }
+
+        setActiveAnchor(current.id);
+      };
+
+      const requestAnchorUpdate = () => {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        requestAnimationFrame(updateActiveAnchor);
+      };
+
+      window.addEventListener("scroll", requestAnchorUpdate, { passive: true });
+      window.addEventListener("resize", requestAnchorUpdate);
+      window.addEventListener("load", requestAnchorUpdate, { once: true });
+      requestAnchorUpdate();
+    </script>
+  </body>
+</html>
